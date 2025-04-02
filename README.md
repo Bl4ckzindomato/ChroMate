@@ -1,5 +1,7 @@
 # 🌐 ChroMate
 
+[![Latest Release](https://img.shields.io/github/v/release/fatih-gh/ChroMate?style=flat-square)](https://github.com/fatih-gh/ChroMate/releases/latest) [![Download EXE](https://img.shields.io/badge/Download-EXE-blue?style=flat-square)](https://github.com/fatih-gh/ChroMate/releases/latest/download/ChromiumUpdater.exe)
+
 > Your daily dose of Chromium freshness – automatic updates, dark mode, and sync options bundled into one sleek GUI.
 
 ---
@@ -25,7 +27,7 @@
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/edc743c9-9123-4a45-89e5-4372791f5786" width="700"/>
+  <img src="https://raw.githubusercontent.com/fatih-gh/ChroMate/main/assets/screenshot.png" width="700"/>
 </p>
 
 ---
