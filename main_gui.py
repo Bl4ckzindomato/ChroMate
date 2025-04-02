@@ -140,7 +140,8 @@ def handle_update_or_install():
             r = requests.get(GITHUB_API, timeout=10)
             release = r.json()
             latest = release["tag_name"]
-            asset = next((a for a in release["assets"] if "mini_installer.sync.exe" in a["name"]), None)
+            dl_type = dl_type_var.get()
+            asset = next((a for a in release["assets"] if f"mini_installer.{dl_type}.exe" in a["name"]), None)
 
             if not asset:
                 progress_label.set("Installer not found.")
@@ -165,22 +166,13 @@ def handle_update_or_install():
             progress_label.set("Installer launched. Waiting 15 sec...")
 
             time.sleep(15)
-
             if os.path.exists(filename):
                 os.remove(filename)
-                log("[✓] Chromium installation completed successfully and installer cleaned up.")
+                log("[✓] Installer cleaned up.")
 
-                # Yeni yüklenen Chromium'u algıla
-                new_path = auto_detect_chrome()
-                if new_path:
-                    path_var.set(new_path)
-                    log(f"[✓] Chromium path updated to: {new_path}")
-                    check_button.configure(text="Check for Updates")
-                    progress_label.set("Chromium has been successfully installed.")
-                    notify("ChroMate", "Chromium installation completed.", notify_enabled)
-                else:
-                    progress_label.set("Installation completed, but Chromium path not found.")
-                    log("[!] Installation finished, but chrome.exe not found.")
+            check_button.configure(text="Check for Updates")
+            progress_label.set("Chromium has been successfully installed.")
+            notify("ChroMate", "Chromium installation completed.", notify_enabled)
         except Exception as e:
             log(f"[!] Installation failed: {e}")
             progress_label.set("Installation failed.")
@@ -188,7 +180,6 @@ def handle_update_or_install():
         return
 
     check_for_update()
-
 
 def check_for_update():
     chrome_path = path_var.get()
@@ -274,6 +265,7 @@ if not config["install_path"]:
     else:
         notify("Chromium Updater", "Chromium not detected.")
         check_button_text = "Install Chromium"
+    
 
 path_var.set(config["install_path"])
 notify_var.set(config["notifications"])
