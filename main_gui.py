@@ -1,4 +1,4 @@
-# Modern Chromium Updater with Dark Mode (customtkinter)
+# ChroMate – Modern Chromium Updater with Dark Mode (customtkinter)
 # SHA256 validation, sync/nosync selection, embedded log viewer, scheduler support
 # Developed by Fatih | Designed with customtkinter for a modern, user-friendly experience
 # Requirements: pip install customtkinter requests pefile plyer
@@ -15,12 +15,15 @@ from plyer import notification
 # === CONFIG ===
 CONFIG_FILE = "settings.json"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-LOG_FILE = os.path.join(SCRIPT_DIR, "chromium_updater.log")
-ICON_FILE = os.path.join(SCRIPT_DIR, "chromium_updater_icon.ico")
 TEMP_DIR = tempfile.gettempdir()
-VERS_FILE = os.path.join(TEMP_DIR, "chromium_last_version.txt")
-GITHUB_API = "https://api.github.com/repos/Hibbiki/chromium-win64/releases/latest"  # Uses Hibbiki's Chromium builds
+
+CONFIG_FILE = "settings.json"
+LOG_FILE = os.path.join(SCRIPT_DIR, "chromate.log")
+VERS_FILE = os.path.join(TEMP_DIR, "chromate_last_version.txt")
+ICON_FILE = os.path.join(SCRIPT_DIR, "chromium_updater_icon.ico")
+GITHUB_API = "https://api.github.com/repos/Hibbiki/chromium-win64/releases/latest"
 VERSION = "1.0.0"
+
 
 DEFAULT_CONFIG = {
     "install_path": "",
@@ -49,18 +52,19 @@ def clear_log():
     log("[✓] Log cleared")
 
 def notify(title, msg, enabled=True):
-    if enabled:
-        try:
-            icon_path = os.path.join(SCRIPT_DIR, "chromium_updater_icon.ico")
-            notification.notify(
-                title=title,
-                message=msg,
-                app_name="Chromium Updater",
-                app_icon=icon_path,
-                timeout=6
-            )
-        except Exception as e:
-            log(f"[X] Notification error: {e}")
+    if not enabled:
+        return
+    try:
+        icon_path = os.path.join(SCRIPT_DIR, "chromium_updater_icon.ico")
+        notification.notify(
+            title=title,
+            message=msg,
+            app_name="ChroMate",
+            app_icon=icon_path if os.path.exists(icon_path) else None,
+            timeout=6
+        )
+    except Exception as e:
+        log(f"[!] Notification skipped: {e}")
 
 def version_tuple(v):
     import re
@@ -109,7 +113,7 @@ def validate_sha256(download_path, hash_url):
         return False
 
 def apply_scheduler(enabled, interval):
-    task_name = "ChromiumUpdaterAutoCheck"
+    task_name = "ChroMateAutoCheck"
     exe_path = os.path.abspath(sys.argv[0])
     if enabled:
         interval_map = {
@@ -154,7 +158,7 @@ def check_for_update():
 
     if not os.path.exists(chrome_path):
         progress_label.set("Chromium not found. Please set path.")
-        notify("Chromium Updater", "Chromium not found on this system.", notify_enabled)
+        notify("ChroMate", "Chromium not found on this system.", notify_enabled)
         return
 
     progress_label.set("Checking for updates...")
@@ -209,7 +213,7 @@ def check_for_update():
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 root = ctk.CTk()
-root.title("Chromium Updater")
+root.title("ChroMate")
 root.geometry("600x680")
 
 path_var = ctk.StringVar()
