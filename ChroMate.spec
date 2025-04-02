@@ -35,5 +35,7 @@ exe = EXE(
     upx_exclude=[],
     runtime_tmpdir=None,
     console=False,
-    icon='chromium_updater_icon.ico'
+    icon='chromium_updater_icon.ico',
+    version='version_info.txt'
 )
+
