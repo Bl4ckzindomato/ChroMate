@@ -1,0 +1,8 @@
+{
+    "install_path": "",
+    "notifications": true,
+    "check_interval": "manual",
+    "enable_scheduler": false,
+    "download_type": "sync"
+  }
+  
